@@ -1,12 +1,10 @@
 import React from 'react'
 
-import Icon from '../components/Icon';
 
+import Icon from '../components/Icon';
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,31 +15,15 @@ import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
-
-
-function Login() {
-  
-
+ function Signup() {
   const navigate = useNavigate();
-
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleSignUp = () => {
     try {
-      navigate('/Craft');
-
-      // const response = await login({ username, password });
-      
-      // Handle response data
-      // console.log('User logged in successfully:', response);
-      
-      // Redirect to another page or update the state as necessary
+    navigate('/Login');
     } catch (error) {
-      // Handle errors such as invalid login credentials
-      console.error('Login failed:', error);
+    console.error('Login failed:', error);
     }
-  };
-
-
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -56,9 +38,19 @@ function Login() {
           <Icon/>
 
           <Typography component="h1" variant="h5">
-            Login In
+            Sign Up
           </Typography>
-          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
+          <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Full Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
             <TextField
               margin="normal"
               required
@@ -67,7 +59,6 @@ function Login() {
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
             />
             <TextField
               margin="normal"
@@ -78,10 +69,6 @@ function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
             />
             <Button
               type="submit"
@@ -96,25 +83,20 @@ function Login() {
                 },
               }}
             >
-              Login In
+              Sign Up
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/Signup" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
+            <Grid container justifyContent="center">
+            <Grid item>
+              <Link href="/UserManagement/Login" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
+                Have an account? Login In
+              </Link>
             </Grid>
+          </Grid>
+
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
   )
 }
-
-export default Login
+export default Signup

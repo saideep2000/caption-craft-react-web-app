@@ -6,7 +6,7 @@ import DrawerComp from './DrawerComp';
 import IconMini from './IconMini';
 import { useNavigate } from 'react-router-dom';
 
-const pages = ["Craft", "Posts", "Messages", "Profile", "Settings", "Help"]
+const pages = ["Home", "Craft", "Messages", "Profile", "Settings", "Help"]
 
 function Header({ activeTab }) {
     const theme = useTheme();

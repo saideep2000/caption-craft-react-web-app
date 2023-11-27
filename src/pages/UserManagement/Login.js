@@ -1,10 +1,12 @@
 import React from 'react'
 
-
 import Icon from '../components/Icon';
+
 
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,15 +17,31 @@ import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
- function Signup() {
+
+
+function Login() {
+  
+
   const navigate = useNavigate();
-  const handleSignUp = () => {
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
     try {
-    navigate('/Login');
+      navigate('/Craft');
+
+      // const response = await login({ username, password });
+      
+      // Handle response data
+      // console.log('User logged in successfully:', response);
+      
+      // Redirect to another page or update the state as necessary
     } catch (error) {
-    console.error('Login failed:', error);
+      // Handle errors such as invalid login credentials
+      console.error('Login failed:', error);
     }
-  }
+  };
+
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -38,19 +56,9 @@ const defaultTheme = createTheme();
           <Icon/>
 
           <Typography component="h1" variant="h5">
-            Sign Up
+            Login In
           </Typography>
-          <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
-          <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Full Name"
-              name="name"
-              autoComplete="name"
-              autoFocus
-            />
+          <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -59,6 +67,7 @@ const defaultTheme = createTheme();
               label="Email Address"
               name="email"
               autoComplete="email"
+              autoFocus
             />
             <TextField
               margin="normal"
@@ -69,6 +78,10 @@ const defaultTheme = createTheme();
               type="password"
               id="password"
               autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
             />
             <Button
               type="submit"
@@ -83,20 +96,25 @@ const defaultTheme = createTheme();
                 },
               }}
             >
-              Sign Up
+              Login In
             </Button>
-            <Grid container justifyContent="center">
-            <Grid item>
-              <Link href="/Login" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
-                Have an account? Login In
-              </Link>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/UserManagement/Signup" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-
           </Box>
         </Box>
       </Container>
     </ThemeProvider>
   )
 }
-export default Signup
+
+export default Login

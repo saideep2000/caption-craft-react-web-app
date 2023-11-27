@@ -3,8 +3,8 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import SignupPage from './pages/guest/Signup';
-import LoginPage from './pages/guest/Login';
+import SignupPage from './pages/UserManagement/Signup';
+import LoginPage from './pages/UserManagement/Login';
 import CraftPage from './pages/guest/Craft';
 import PostsPage from './pages/guest/Posts';
 import MessagesPage from './pages/guest/Messages';
@@ -22,7 +22,7 @@ function App() {
             <Route path="/Login" element={<LoginPage/>} />
             <Route path="/Signup" element={<SignupPage/>} />
             <Route path="/Craft" element={<CraftPage/>} />
-            <Route path="/Posts" element={<PostsPage/>} />
+            <Route path="/Home" element={<PostsPage/>} />
             <Route path="/Messages" element={<MessagesPage/>}/>
             <Route path="/Profile" element={<ProfilePage/>}/>
             <Route path="/Settings" element={<SettingsPage/>}/>
