@@ -126,7 +126,7 @@ const defaultTheme = createTheme();
             </Button>
             <Grid container justifyContent="center">
             <Grid item>
-              <Link href="/UserManagement/Login" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
+              <Link href="/Login" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
                 Have an account? Login In
               </Link>
             </Grid>

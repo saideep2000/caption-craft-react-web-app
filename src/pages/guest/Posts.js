@@ -31,7 +31,7 @@ function Posts({ user }) {
     <div style={{ overflow: 'hidden', width: '100%' }}>
       <Grid container direction="column" spacing={9}>
         <Grid item>
-          <Header activeTab="Posts" />
+          <Header activeTab="Home" />
         </Grid>
         <Grid item>
           <Box sx={{ flexGrow: 1 }}>

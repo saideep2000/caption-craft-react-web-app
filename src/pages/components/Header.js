@@ -1,14 +1,17 @@
 import React, {useState} from 'react'
 
 import AppBar from '@mui/material/AppBar';
-import { Button, Tab, Tabs, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import {Tab, Tabs, Toolbar, useMediaQuery, useTheme} from '@mui/material';
 import DrawerComp from './DrawerComp';
 import IconMini from './IconMini';
-import { useNavigate } from 'react-router-dom';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import {useNavigate} from 'react-router-dom';
+import LoginButtons from "./LoginButtons";
 
-const pages = ["Home", "Craft", "Messages", "Profile", "Settings", "Help"]
+const pages = ["Home", "Craft", "Messages", "Profile", "Settings", "Help"];
 
-function Header({ activeTab }) {
+function Header({ activeTab, user}) {
+    const isUser = (user !== undefined);
     const theme = useTheme();
     const isMatch = useMediaQuery(theme.breakpoints.down("md"));
     const navigate = useNavigate();
@@ -44,7 +47,7 @@ function Header({ activeTab }) {
     const handleChange = (event, newValue) => {
         setValue(newValue); // Update the selected tab's value
         const page = pages[newValue]; // Get the page name based on the index
-        navigate(`/${page}`); // Navigate to the selected page's route
+        isUser ? navigate(`/User${page}`) : navigate(`/${page}`); // Navigate to the selected page's route
     };
   return (
     <React.Fragment>
@@ -66,22 +69,11 @@ function Header({ activeTab }) {
                                 }
                             </Tabs>
                             <IconMini onClick = {handleIcon} sx={{ ml : "265px"}}/>
-                            <Button sx = {{
-                                marginLeft : "auto", background : "white", color : "#3c3c3c", mr : "10px", 
-                                '&:hover': {
-                                    color : "white",
-                                    backgroundColor: 'green',
-                                  },
-                            }} varaint = "conatined" onClick={handleLogin}
-                            > Login </Button>
-                            <Button sx = {{
-                                marginLeft : "5 px", background : "white", color : "#3c3c3c",
-                                '&:hover': {
-                                    color : "white",
-                                    backgroundColor: 'green',
-                                  },
-                                }} varaint = "conatined" onClick={handleSignUp}
-                                > Signup </Button>
+                            { isUser ? <Tab icon={<PersonOutlineIcon/>} key = {user._id} label = {user.username}
+                                            textColor="white" sx={{flexGrow: 0, ml: 'auto'}}/> :
+                                <LoginButtons handleLogin={handleLogin} handleSignUp={handleSignUp}/>
+                            }
+
                         </>
                     )
                 }

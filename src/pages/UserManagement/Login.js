@@ -130,7 +130,7 @@ function Login() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/UserManagement/Signup" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
+                <Link href="/Signup" variant="body2" sx={{ textDecoration: 'none', color: '#3c3c3c' }}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../components/Header';
 import {Grid, styled, Typography} from '@mui/material'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import * as client from "./client"
 import PostCards from "../PostCards";
 
 
@@ -24,14 +25,27 @@ function UserPosts({ user }) {
     likes: 20,
     public: true,
   };
+  const [currUser, setCurrUser] = useState({});
   // TODO - need to query a list of public posts that are displayed on dashboard
   const suggested_header = "Suggested for You";
+  const fetchAccount = async () => {
+    try {
+      const user = await client.fetchAccount();
+      setCurrUser(user);
+    } catch (error){
+      console.error("error in retrieving account!", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAccount();
+  });
 
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
       <Grid container direction="column" spacing={9}>
         <Grid item>
-          <Header activeTab="Posts" />
+          <Header activeTab="Home" user={currUser}/>
         </Grid>
         <Grid item>
           <Box sx={{ flexGrow: 1 }}>

@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Button, TextField, Grid, Paper, Typography, Chip } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-function Generate() {
+function Generate({user}) {
   // State to hold the textarea value and selected styles
+    const isUser = (user !== undefined);
   const [text, setText] = useState('');
   const [styles, setStyles] = useState([]);
 
@@ -40,16 +41,24 @@ function Generate() {
           onChange={handleTextChange}
         />
       </Grid>
-      <Grid item xs={12}>
-        <Button variant="contained" color="primary" onClick={generateImage} 
-        sx = {{bgcolor : "black" , 
+      <Grid item xs={12} direction="row" spacing={2}>
+          <Button variant="contained" color="primary" onClick={generateImage} sx = {{bgcolor : "black" , margin: 2,
             '&:hover': {
                 color : "white",
                 backgroundColor: 'green',
               }
-        }}>
-          Generate
-        </Button>
+            }}>
+            Generate
+          </Button>
+          {isUser ? <Button variant="contained" color="primary" onClick={generateImage} sx = {{bgcolor : "green" ,
+              margin: 2,
+            '&:hover': {
+                color : "white",
+                backgroundColor: 'black',
+              }
+            }}>
+            Save
+          </Button> : ""}
       </Grid>
       <Grid item xs={12}>
         <Typography variant="h6">Choose styles:</Typography>
