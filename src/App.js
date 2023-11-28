@@ -11,6 +11,8 @@ import MessagesPage from './pages/guest/Messages';
 import ProfilePage from './pages/guest/Profile';
 import SettingsPage from './pages/guest/Settings';
 import HelpPage from './pages/guest/Help';
+import UserCraft from './pages/user/Craft';
+import UserPosts from './pages/user/Posts';
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
             <Route path="/Profile" element={<ProfilePage/>}/>
             <Route path="/Settings" element={<SettingsPage/>}/>
             <Route path="/Help" element={<HelpPage/>}/>
+            <Route path="/UserCraft" element={<UserCraft/>}/>
+            <Route path="/UserHome" element={<UserPosts/>}/>
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from './components/Header';
-import Poster from './components/Poster';
+import Header from '../components/Header';
+import Poster from '../components/Poster';
 import { Grid } from '@mui/material';
-import Footer from './components/Footer';
+import Footer from '../components/Footer';
 
-function Craft() {
+function UserCraft() {
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
       <Grid container direction="column" spacing={8}>
@@ -22,4 +22,4 @@ function Craft() {
   );
 }
 
-export default Craft;
+export default UserCraft;
