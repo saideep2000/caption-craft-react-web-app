@@ -32,14 +32,30 @@ function UserPosts({ user }) {
     try {
       const user = await client.fetchAccount();
       setCurrUser(user);
+      console.log(user)
     } catch (error){
       console.error("error in retrieving account!", error);
+    }
+  };
+  const fetchFeed = async () => {
+    console.log(currUser)
+      // console.log(user._id)
+    try {
+      // const feed = await client.fetchFeed(user._id);
+      
+    } catch (error){
+      console.error("error in retrieving pictures!", error);
     }
   };
 
   useEffect(() => {
     fetchAccount();
   });
+  // useEffect(() => {
+  //   if (currUser) {
+  //     fetchFeed();
+  //   }
+  // }, [currUser]);
 
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
