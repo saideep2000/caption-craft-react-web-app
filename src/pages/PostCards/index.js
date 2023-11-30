@@ -15,7 +15,6 @@ function PostCards({ post }) {
       <CardHeader
         avatar={
           <Avatar aria-label="user" src={post.userAvatar}>
-              {post.username[0]}
           </Avatar>
         }
         action={
@@ -39,7 +38,7 @@ function PostCards({ post }) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <FavoriteIcon sx={{color: "rgb(255, 48, 64)"}}/>
           {post.likes}
         </IconButton>
         <IconButton aria-label="comment">

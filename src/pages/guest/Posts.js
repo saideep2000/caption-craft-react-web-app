@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../components/Header';
 import {Grid, styled, Typography} from '@mui/material'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import PostCards from "../PostCards";
+import * as client from "./client";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -15,15 +16,31 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function Posts({ user }) {
-  const post = {
-    username: 'Username',
-    userAvatar: 'path_to_avatar.jpg', // Replace with actual avatar URL
-    date: 'September 14, 2023',
-    imageUrl: 'https://images.unsplash.com/photo-1639403169804-318fcb1d23ad?auto=format&fit=crop&q=80&w=1932&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Replace with actual image URL
-    description: 'Sand hues and tree in between',
-    likes: 20,
-    public: true,
+  const [posts, setPosts] = useState([]);
+  const fetchPosts = async () => {
+      try {
+        const response = await client.fetchPosts();
+        console.log(response);
+        const transformedPosts = response.map(post => ({
+          key: post._id,
+          username: post.username, // Assuming you have a way to get the username from the ID
+          userAvatar: post.profilePicture, // You might need to map the user ID to an avatar path
+          date: new Date(post.timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }), // Format the date
+          imageUrl: post.url,
+          description: post.description,
+          likes: post.likes,
+          public: post.public,
+          comments: post.comments,
+        }));
+        setPosts(transformedPosts);
+      } catch (error){
+        console.error("error in retrieving account!", error);
+      }
   };
+  useEffect(() => {
+    fetchPosts();
+    }, []);
+
   // TODO - need to query a list of public posts that are displayed on dashboard
   const suggested_header = "Suggested for You";
 
@@ -48,8 +65,7 @@ function Posts({ user }) {
                   {/*  Posts*/}
                   {/*</Typography>*/}
                   {/*TODO - use map to display posts queried from server*/}
-                  <PostCards post={post} />
-                  <PostCards post={post} />
+                  {posts.map((p) => (<PostCards post={p}/>) )}
                 </Item>
               </Grid>
               <Grid item lg={2}> {/* Adjust the size as needed */}

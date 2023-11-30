@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import {Tab, Tabs, Toolbar, useMediaQuery, useTheme} from '@mui/material';
 import DrawerComp from './DrawerComp';
 import IconMini from './IconMini';
+import * as client from "../user/client";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import {useNavigate} from 'react-router-dom';
 import LoginButtons from "./LoginButtons";
@@ -44,6 +45,14 @@ function Header({ activeTab, user}) {
         console.error('Login failed:', error);
         }
     }
+    const handleLogout = () => {
+        try {
+            client.accSignOut(user._id); // TODO - This should be changed to redux state management call
+            navigate("/Home");
+        } catch (error) {
+            console.error("Logout Failed:", error);
+        }
+    }
     const handleChange = (event, newValue) => {
         setValue(newValue); // Update the selected tab's value
         const page = pages[newValue]; // Get the page name based on the index
@@ -70,7 +79,7 @@ function Header({ activeTab, user}) {
                             </Tabs>
                             <IconMini onClick = {handleIcon} sx={{ ml : "265px"}}/>
                             { isUser ? <Tab icon={<PersonOutlineIcon/>} key = {user._id} label = {user.username}
-                                            textColor="white" sx={{flexGrow: 0, ml: 'auto'}}/> :
+                                            textColor="white" sx={{flexGrow: 0, ml: 'auto'}} onClick={handleLogout}/> :
                                 <LoginButtons handleLogin={handleLogin} handleSignUp={handleSignUp}/>
                             }
 

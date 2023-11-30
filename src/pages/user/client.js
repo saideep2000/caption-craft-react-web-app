@@ -12,9 +12,17 @@ export const fetchAccount = async () => {
     const response = await request.get( `${USERS_API}/fetchAccount` );
     return response.data;
 };
-
-export const fetchFeed = async (userId) => {
-    const response = await request.get( `${PICTURES_API}/UserFeed`, userId );
+export const fetchFollowFeed = async (user) => {
+    const response = await request.post(`${PICTURES_API}/UserFeed`, user);
+    return response.data;
+};
+export const fetchPosts = async () => {
+    const response = await request.get(`${PICTURES_API}/all`);
     return response.data;
 };
 
+
+export const accSignOut = async () => {
+    const response = await request.post(`${USERS_API}/signout`);
+    return response.data;
+};
