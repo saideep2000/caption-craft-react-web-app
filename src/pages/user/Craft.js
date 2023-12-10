@@ -19,7 +19,7 @@ function UserCraft() {
 
   useEffect(() => {
     fetchAccount();
-  });
+  }, []);
 
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>

@@ -14,9 +14,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
 import { useState } from "react";
 import * as client from "./client";
+import {useDispatch} from "react-redux";
+import {setCurrUser} from "../user/userReducer";
+
 
 const defaultTheme = createTheme();
 
@@ -26,12 +28,14 @@ function Login() {
   const [credentials, setCredentials] = useState({ username: "", password: "" });
   const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       console.log(credentials)
       const message = await client.Login(credentials);
+      dispatch(setCurrUser(message));
       if (message) {
         navigate('/UserHome');
       } else {

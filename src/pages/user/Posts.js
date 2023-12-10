@@ -1,11 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Header from '../components/Header';
 import {Grid, styled, Typography} from '@mui/material'
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import * as client from "./client"
 import PostCards from "../PostCards";
+import {useDispatch, useSelector} from "react-redux";
+import {setCurrUser, setPosts} from "./userReducer";
+import {useNavigate} from "react-router-dom";
 
+// Credentials:
+// user101
+// hashed_password1
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -16,14 +22,17 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function UserPosts() {
-  const [posts, setPosts] = useState([]);
-  const [currUser, setCurrUser] = useState({});
+  const {posts} = useSelector((state) => state.userReducer);
+  const {currUser} = useSelector((state) => state.userReducer);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const suggested_header = "Suggested for You";
   const fetchAccount = async () => {
     try {
       const user = await client.fetchAccount();
-      setCurrUser(user);
+      dispatch(setCurrUser(user));
     } catch (error){
       console.error("error in retrieving account!", error);
     }
@@ -42,10 +51,16 @@ function UserPosts() {
           public: post.public,
           comments: post.comments,
         }));
-        setPosts(transformedPosts);
+        dispatch(setPosts(transformedPosts));
       } catch (error){
         console.error("error in retrieving account!", error);
       }
+  };
+
+  const redirectLogin = () => {
+    if (currUser._id === undefined){
+      navigate("/Login");
+    }
   };
 
   useEffect(() => {
@@ -55,11 +70,16 @@ function UserPosts() {
   useEffect(() => {
     fetchFollowFeed(currUser);
     }, [currUser]);
+
+  useEffect(() => {
+    redirectLogin();
+  }, [currUser]);
+
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
       <Grid container direction="column" spacing={9}>
         <Grid item>
-          <Header activeTab="Home" user={currUser}/>
+          <Header activeTab="Home"/>
         </Grid>
         <Grid item>
           <Box sx={{ flexGrow: 1 }}>
@@ -72,10 +92,6 @@ function UserPosts() {
                   alignItems: 'center',
                   justifyContent: 'center'}}
                   >
-                  {/*<Typography variant="h4" textAlign="center">*/}
-                  {/*  Posts*/}
-                  {/*</Typography>*/}
-                  {/*TODO - use map to display posts queried from server*/}
                   {posts.map((p) => (<PostCards post={p}/>) )}
                 </Item>
               </Grid>
@@ -86,7 +102,6 @@ function UserPosts() {
                   </Typography>
                 </Item>
               </Grid>
-              {/* Other Grid items */}
             </Grid>
           </Box>
         </Grid>

@@ -8,12 +8,17 @@ import * as client from "../user/client";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import {useNavigate} from 'react-router-dom';
 import LoginButtons from "./LoginButtons";
+import {useDispatch, useSelector} from "react-redux";
+import {resetState} from "../user/userReducer";
+
 
 const pages = ["Home", "Craft", "Messages", "Profile", "Settings", "Help"];
 
-function Header({ activeTab, user}) {
-    const isUser = (user !== undefined);
+function Header({activeTab}) {
+    const {currUser} = useSelector((state) => state.userReducer);
+    const isUser = (currUser._id !== undefined);
     const theme = useTheme();
+    const dispatch = useDispatch();
     const isMatch = useMediaQuery(theme.breakpoints.down("md"));
     const navigate = useNavigate();
     const findTabIndex = (tabName) => {
@@ -47,7 +52,8 @@ function Header({ activeTab, user}) {
     }
     const handleLogout = () => {
         try {
-            client.accSignOut(user._id); // TODO - This should be changed to redux state management call
+            client.accSignOut(currUser._id);
+            dispatch(resetState());
             navigate("/Home");
         } catch (error) {
             console.error("Logout Failed:", error);
@@ -78,7 +84,7 @@ function Header({ activeTab, user}) {
                                 }
                             </Tabs>
                             <IconMini onClick = {handleIcon} sx={{ ml : "265px"}}/>
-                            { isUser ? <Tab icon={<PersonOutlineIcon/>} key = {user._id} label = {user.username}
+                            { isUser ? <Tab icon={<PersonOutlineIcon/>} key = {currUser._id} label = {currUser.username}
                                             textColor="white" sx={{flexGrow: 0, ml: 'auto'}} onClick={handleLogout}/> :
                                 <LoginButtons handleLogin={handleLogin} handleSignUp={handleSignUp}/>
                             }

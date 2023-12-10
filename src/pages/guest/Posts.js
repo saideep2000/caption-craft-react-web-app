@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import PostCards from "../PostCards";
 import * as client from "./client";
+import {useDispatch, useSelector} from "react-redux";
+import {setPosts} from "../user/userReducer";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -15,12 +17,12 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-function Posts({ user }) {
-  const [posts, setPosts] = useState([]);
+function Posts() {
+  const {posts} = useSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
   const fetchPosts = async () => {
       try {
         const response = await client.fetchPosts();
-        console.log(response);
         const transformedPosts = response.map(post => ({
           key: post._id,
           username: post.username, // Assuming you have a way to get the username from the ID
@@ -32,7 +34,7 @@ function Posts({ user }) {
           public: post.public,
           comments: post.comments,
         }));
-        setPosts(transformedPosts);
+        dispatch(setPosts(transformedPosts));
       } catch (error){
         console.error("error in retrieving account!", error);
       }
@@ -61,18 +63,7 @@ function Posts({ user }) {
                   alignItems: 'center',
                   justifyContent: 'center'}}
                   >
-                  {/*<Typography variant="h4" textAlign="center">*/}
-                  {/*  Posts*/}
-                  {/*</Typography>*/}
-                  {/*TODO - use map to display posts queried from server*/}
                   {posts.map((p) => (<PostCards post={p}/>) )}
-                </Item>
-              </Grid>
-              <Grid item lg={2}> {/* Adjust the size as needed */}
-                <Item elevation={0}>
-                  <Typography variant="h6" textAlign="center">
-                    {(user!==undefined) && suggested_header}
-                  </Typography>
                 </Item>
               </Grid>
               {/* Other Grid items */}
