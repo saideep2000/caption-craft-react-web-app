@@ -15,6 +15,9 @@ import HelpPage from './pages/guest/Help';
 import UserCraft from './pages/user/Craft';
 import UserPosts from './pages/user/Posts';
 import {Provider} from "react-redux";
+import UserProfile from "./pages/user/Profile";
+import UserHelp from "./pages/user/Help";
+import UserSettings from "./pages/user/Settings";
 
 function App() {
   return (
@@ -34,6 +37,9 @@ function App() {
                 <Route path="/Help" element={<HelpPage/>}/>
                 <Route path="/UserCraft" element={<UserCraft/>}/>
                 <Route path="/UserHome" element={<UserPosts/>}/>
+                <Route path="/UserProfile" element={<UserProfile/>}/>
+                <Route path="/UserHelp" element={<UserHelp/>}/>
+                <Route path="/UserSettings" element={<UserSettings/>}/>
             </Routes>
           </BrowserRouter>
         </Provider>

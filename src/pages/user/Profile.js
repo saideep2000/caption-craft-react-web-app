@@ -1,7 +1,8 @@
 import React from 'react';
-import { Grid, Typography, Avatar, Card, CardContent, CardMedia } from '@mui/material';
+import { Grid, Typography, Card, CardContent, CardMedia } from '@mui/material';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import {useSelector} from "react-redux";
 
 function UserInfo({ user }) {
   return (
@@ -15,19 +16,19 @@ function UserInfo({ user }) {
       </Grid>
       <Grid item>
         {}
-        <Typography variant="h4" style={{ marginBottom: '16px' }}>{user.name}</Typography>
+        <Typography variant="h4" style={{ marginBottom: '16px' }}>{user.firstname + " " + user.lastname}</Typography>
         <Grid container spacing={2} justifyContent="center">
           <Grid item>
             <Typography variant="body1" align="center">Following</Typography>
-            <Typography variant="h6" align="center">{user.following}</Typography>
+            <Typography variant="h6" align="center">{user.following.length}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" align="center">Followers</Typography>
-            <Typography variant="h6" align="center">{user.followers}</Typography>
+            <Typography variant="h6" align="center">{user.followers.length}</Typography>
           </Grid>
           <Grid item>
             <Typography variant="body1" align="center">Posts</Typography>
-            <Typography variant="h6" align="center">{user.posts}</Typography>
+            <Typography variant="h6" align="center">{user.PostedPictures.length}</Typography>
           </Grid>
         </Grid>
       </Grid>
@@ -40,17 +41,17 @@ function UserPosts({ posts }) {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
       {posts.map((post, index) => (
         <Card key={index} style={{ width: '200px', margin: '10px' }}>
-          {post.image && (
+          {post.url && (
             <CardMedia
               component="img"
               alt="Post Image"
               height="140"
-              image={post.image}
+              image={post.url}
 
             />
           )}
           <CardContent>
-            <Typography>{post.caption}</Typography>
+            <Typography>{post.description}</Typography>
           </CardContent>
         </Card>
       ))}
@@ -58,15 +59,9 @@ function UserPosts({ posts }) {
   );
 }
 
-function Profile() {
-  const user = {
-    name: 'John Doe',
-    profilePicture: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoa9dqZfjjzrsn6kSj8CYC7HmRhbhuzAo4Bw&usqp=CAU',
-    followers: 500,
-    following: 200,
-    posts: 3,
-  };
-
+function UserProfile() {
+  const {currUser} = useSelector((state) => state.userReducer);
+  console.log(currUser);
   const userPosts = [
     { image: 'https://lh5.googleusercontent.com/p/AF1QipMWW7UPJPT0ARPXMXIw2VzHBkqHPGLWMzps_uTF=w1080-h624-n-k-no', caption: 'Enjoying the view!!!' },
     { image: 'https://lh5.googleusercontent.com/p/AF1QipNIBSvmCqm3tphLvc3CXtSdVrpQtyCg3x4zpEKo=w1080-h624-n-k-no', caption: 'Snow day :)' },
@@ -80,7 +75,7 @@ function Profile() {
           {}
           <Grid item>
             {}
-            <UserInfo user={user} />
+            <UserInfo user={currUser} />
           </Grid>
           <Grid item>
                     {}
@@ -88,7 +83,7 @@ function Profile() {
                   </Grid>
           <Grid item>
             {}
-            <UserPosts posts={userPosts} />
+            <UserPosts posts={currUser.PostedPictures} />
           </Grid>
 
         </Grid>
@@ -97,4 +92,4 @@ function Profile() {
     );
   }
 
-  export default Profile;
+  export default UserProfile;
