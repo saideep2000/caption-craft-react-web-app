@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Button, TextField, Grid, Paper, Typography, Chip } from '@mui/material';
+import { Button, TextField, Grid, Paper, Typography, Chip, Card,CardMedia, CircularProgress} from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import * as client from "./client";
 
 function Generate({user}) {
   // State to hold the textarea value and selected styles
-    const isUser = (user !== undefined);
+  const isUser = (user !== undefined);
   const [text, setText] = useState('');
   const [styles, setStyles] = useState([]);
+  const [imageResponse, setImageResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handle change in text area
   const handleTextChange = (event) => {
@@ -22,9 +25,14 @@ function Generate({user}) {
   };
 
   // Handle image generation
-  const generateImage = () => {
+  const generateImage = async () => {
     // Implement image generation logic here
+    setIsLoading(true);
     console.log('Generating image with the following text and styles:', text, styles);
+    const response = await client.generateImage({'prompt': text});
+    setImageResponse(response.image);
+    setIsLoading(false);
+    console.log(response.image);
   };
 
   // Example styles - replace with your actual styles
@@ -89,6 +97,13 @@ function Generate({user}) {
           ))}
         </Paper>
       </Grid>
+      {imageResponse ? <Grid item xs={12}>
+        <img src={imageResponse}></img>
+      </Grid> : null}
+      {
+        isLoading ? 
+        <CircularProgress /> : null
+      }
     </Grid>
   );
 }
