@@ -22,6 +22,24 @@ export const fetchPosts = async () => {
     return response.data;
 };
 
+export const fetchSuggestedUsers = async (userId) => {
+    const response = await request.post(`${USERS_API}/suggestedUsers`, userId);
+    return response.data;
+};
+
+export const fetchFollowingUsers = async (userId) => {
+    const response = await request.post(`${USERS_API}/followedUsers`, userId);
+    return response.data;
+};
+
+export const followUsers = async (Ids) => {
+    const response = await request.post(`${USERS_API}/followUser`, Ids);
+    return response.data;
+};
+
+
+
+
 
 export const accSignOut = async () => {
     const response = await request.post(`${USERS_API}/signout`);

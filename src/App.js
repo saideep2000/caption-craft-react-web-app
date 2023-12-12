@@ -42,6 +42,7 @@ function App() {
                 <Route path="/UserHelp" element={<UserHelp/>}/>
                 <Route path="/UserSettings" element={<UserSettings/>}/>
                 <Route path="/UserMessages" element={<UserMessages/>}/>
+                <Route path="/UserMessages/:frndId" element={<UserMessages />} />
             </Routes>
           </BrowserRouter>
         </Provider>

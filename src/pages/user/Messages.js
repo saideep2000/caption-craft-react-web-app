@@ -4,6 +4,7 @@ import { Avatar, Box, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper,
 import SendIcon from '@mui/icons-material/Send';
 import * as client from "./client";
 import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
 
 function UserMessages() {
   const [list, setList] = useState([]);
@@ -12,6 +13,8 @@ function UserMessages() {
   const [newMessage, setNewMessage] = useState('');
   const chatContainerRef = useRef(null);
   const { currUser } = useSelector((state) => state.userReducer);
+  const { frndId } = useParams();
+
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -24,6 +27,10 @@ function UserMessages() {
       const Id = { "userId": currUser._id };
       const chattedList = await client.fetchFriendMessagesList(Id);
       setList(chattedList);
+      if (frndId) {
+        handleUserClick(frndId);
+      }
+
     } catch (error) {
       console.error("error in retrieving friends list!", error);
     }
