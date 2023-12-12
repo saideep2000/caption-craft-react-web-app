@@ -3,6 +3,7 @@ import axios from "axios";
 export const BASE_API = process.env.REACT_APP_BASE_API_URL;
 export const USERS_API = `${BASE_API}/users`;
 export const PICTURES_API = `${BASE_API}/pictures`;
+export const MESSAGES_API = `${BASE_API}/messages`;
 
 const request = axios.create({
     withCredentials: true,
@@ -26,3 +27,19 @@ export const accSignOut = async () => {
     const response = await request.post(`${USERS_API}/signout`);
     return response.data;
 };
+
+
+export const fetchFriendMessagesList = async (Id) => {
+    const response = await request.post(`${MESSAGES_API}/UserFriendList`, Id);
+    return response.data;
+}
+export const fetchMessages = async (Ids) => {
+    const response = await request.post(`${MESSAGES_API}/UserMessages`, Ids);
+    return response.data;
+}
+
+export const addMessageToUser = async (info) => {
+    const response = await request.post(`${MESSAGES_API}/AddUserMessage`, info);
+    return response.data;
+}
+

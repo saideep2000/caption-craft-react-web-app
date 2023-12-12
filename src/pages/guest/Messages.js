@@ -14,7 +14,7 @@ function Messages() {
         <Grid item>
           <DisplayMessage message = "Messages"/>
         </Grid>
-        <Grid item style={{ marginBottom: '-24px' }}> 
+        <Grid item style={{ marginBottom: '-24px'}}> 
           <Footer />
         </Grid>
       </Grid>

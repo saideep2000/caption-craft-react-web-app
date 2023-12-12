@@ -18,6 +18,7 @@ import {Provider} from "react-redux";
 import UserProfile from "./pages/user/Profile";
 import UserHelp from "./pages/user/Help";
 import UserSettings from "./pages/user/Settings";
+import UserMessages from "./pages/user/Messages";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
                 <Route path="/UserProfile" element={<UserProfile/>}/>
                 <Route path="/UserHelp" element={<UserHelp/>}/>
                 <Route path="/UserSettings" element={<UserSettings/>}/>
+                <Route path="/UserMessages" element={<UserMessages/>}/>
             </Routes>
           </BrowserRouter>
         </Provider>

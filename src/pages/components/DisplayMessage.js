@@ -5,7 +5,7 @@ function DisplayMessage({ message }) {
   return (
     <div style={{ margin: '20px', textAlign: 'center' }}>
       <Typography variant="h3" component="h3">
-        Need to Login or Signup to use this feature - {message}!!!
+        Need to Login or Signup to use {message}!!! feature
       </Typography>
     </div>
   );
