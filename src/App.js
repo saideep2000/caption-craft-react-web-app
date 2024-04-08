@@ -8,12 +8,14 @@ import SignupPage from './pages/UserManagement/Signup';
 import LoginPage from './pages/UserManagement/Login';
 import CraftPage from './pages/guest/Craft';
 import PostsPage from './pages/guest/Posts';
+import SearchPage from './pages/guest/Search';
 import MessagesPage from './pages/guest/Messages';
 import ProfilePage from './pages/guest/Profile';
 import SettingsPage from './pages/guest/Settings';
 import HelpPage from './pages/guest/Help';
 import UserCraft from './pages/user/Craft';
 import UserPosts from './pages/user/Posts';
+import UserSearch from './pages/user/Search';
 import {Provider} from "react-redux";
 import UserProfile from "./pages/user/Profile";
 import UserHelp from "./pages/user/Help";
@@ -34,11 +36,13 @@ function App() {
                 <Route path="/Home" element={<PostsPage/>} />
                 <Route path="/Messages" element={<MessagesPage/>}/>
                 <Route path="/Profile" element={<ProfilePage/>}/>
+                <Route path="/Search" element={<SearchPage/>}/>
                 <Route path="/Settings" element={<SettingsPage/>}/>
                 <Route path="/Help" element={<HelpPage/>}/>
                 <Route path="/UserCraft" element={<UserCraft/>}/>
                 <Route path="/UserHome" element={<UserPosts/>}/>
                 <Route path="/UserProfile" element={<UserProfile/>}/>
+                <Route path="/UserSearch" element={<UserSearch/>}/>
                 <Route path="/UserHelp" element={<UserHelp/>}/>
                 <Route path="/UserSettings" element={<UserSettings/>}/>
                 <Route path="/UserMessages" element={<UserMessages/>}/>

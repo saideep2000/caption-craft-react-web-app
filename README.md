@@ -16,6 +16,8 @@ npm install @mui/material @emotion/react @emotion/styled
 
 npm install @mui/icons-material
 
+npm install socket.io-client
+
 Here Pages will have all the pages we create
 
 Components : These are the small patches like (header,footer,poster) for the pages can be reusable.

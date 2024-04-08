@@ -5,6 +5,9 @@ export const USERS_API = `${BASE_API}/users`;
 export const PICTURES_API = `${BASE_API}/pictures`;
 export const MESSAGES_API = `${BASE_API}/messages`;
 
+export const AUDIO_API = `${BASE_API}/audiocall`;
+export const VIDEO_API = `${BASE_API}/videocall`;
+
 const request = axios.create({
     withCredentials: true,
 });
@@ -61,3 +64,12 @@ export const addMessageToUser = async (info) => {
     return response.data;
 }
 
+export const audioCall = async (info) => {
+    const response = await request.post(`${AUDIO_API}/audioCallUser`, info);
+    return response.data;
+}
+
+export const videoCall = async (info) => {
+    const response = await request.post(`${VIDEO_API}/videoCallUser`, info);
+    return response.data;
+}

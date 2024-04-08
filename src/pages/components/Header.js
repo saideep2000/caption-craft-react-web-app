@@ -6,13 +6,14 @@ import DrawerComp from './DrawerComp';
 import IconMini from './IconMini';
 import * as client from "../user/client";
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import HelpIcon from '@mui/icons-material/Help';
 import {useNavigate} from 'react-router-dom';
 import LoginButtons from "./LoginButtons";
 import {useDispatch, useSelector} from "react-redux";
 import {resetState} from "../user/userReducer";
 
 
-const pages = ["Home", "Craft", "Messages", "Profile", "Settings", "Help"];
+const pages = ["Home", "Craft", "Search", "Messages", "Profile", "Settings"];
 
 function Header({activeTab}) {
     const {currUser} = useSelector((state) => state.userReducer);
@@ -64,6 +65,9 @@ function Header({activeTab}) {
         const page = pages[newValue]; // Get the page name based on the index
         isUser ? navigate(`/User${page}`) : navigate(`/${page}`); // Navigate to the selected page's route
     };
+    const handleHelp = () =>{
+        isUser ? navigate(`/User${"Help"}`) : navigate(`/${"Help"}`);
+    }
   return (
     <React.Fragment>
         <AppBar sx = {{background : "black"}}>
@@ -83,7 +87,8 @@ function Header({activeTab}) {
                                     ))
                                 }
                             </Tabs>
-                            <IconMini onClick = {handleIcon} sx={{ ml : "265px"}}/>
+                            <IconMini onClick = {handleIcon} sx={{ ml : "180px"}}/>
+                            <HelpIcon onClick = {handleHelp} fontSize='large' sx={{ ml : "610px"}}/>
                             { isUser ? <Tab icon={<PersonOutlineIcon/>} key = {currUser._id} label = {currUser.username}
                                             textColor="white" sx={{flexGrow: 0, ml: 'auto'}} onClick={handleLogout}/> :
                                 <LoginButtons handleLogin={handleLogin} handleSignUp={handleSignUp}/>

@@ -6,6 +6,8 @@ import Header from '../components/Header';
 import PostCards from '../PostCards';
 import * as client from './client';
 import { setCurrUser, setPosts } from './userReducer';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import NewPost from '../components/NewPost';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -53,6 +55,8 @@ function UserPosts() {
   const navigate = useNavigate();
   const [suggestedUsers, setSuggestedUsers] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [showNewPost, setShowNewPost] = useState(false);
 
   const fetchAccount = async () => {
     try {
@@ -62,6 +66,11 @@ function UserPosts() {
       console.error('error in retrieving account!', error);
     }
   };
+
+  const PostsContainer = styled(Box)({
+    maxHeight: 'calc(100vh - 60px)', // Adjust this value based on your layout needs
+    overflowY: 'auto'
+  });
 
   const fetchFollowFeed = async (user) => {
     try {
@@ -117,9 +126,67 @@ function UserPosts() {
     }
   };
 
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
+
+  const handlePost = (event) => {
+    try{
+      // <NewPost/>
+      const file = event.target.files[0];
+      if (file) {
+        setSelectedFile(file);
+        setShowNewPost(true);
+      }
+    }
+    catch (error){
+      console.error('error in following User!', error);
+    }
+  }
+
   const handleMessageButtonClick = (frndId) => {
     navigate(`/UserMessages/${frndId}`);
   };
+
+  const ForegroundContainer = styled('div')({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)', // Semi-transparent white background
+    backdropFilter: 'blur(5px)', // Apply blur effect to the background content
+    // Add other styling as necessary
+  });
+  
+
+  const RelativeContainer = styled('div')({
+    position: 'relative',
+    // Add other styling as necessary
+  });
+
+  const BlurredGrid = styled(Grid)(({ theme, shouldBlur }) => ({
+    filter: shouldBlur ? 'blur(1px)' : 'none',
+    transition: theme.transitions.create('filter', {
+      duration: theme.transitions.duration.short,
+    }),
+    // Add other styling as necessary
+  }));
+  
+  
+  
 
   useEffect(() => {
     fetchAccount();
@@ -139,40 +206,60 @@ function UserPosts() {
 
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
-      <Grid container direction="column" spacing={9}>
-        <Grid item>
-          <Header activeTab="Home" />
-        </Grid>
-        <Grid item>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container justifyContent="center" alignItems="column" spacing={10}>
-              <Grid item xs={12} md={8} lg={9}>
-                <Item sx={{ display: 'flex', flexDirection: 'column', spacing: 1, alignItems: 'center', justifyContent: 'center' }}>
-                  {posts.map(p => (<PostCards key={p.key} post={p} />))}
-                </Item>
-              </Grid>
-              <Grid item lg={2.7}>
-                <Item>
-                  <Typography variant="h6" textAlign="center">Suggested for You</Typography>
-                  <ScrollableBox>
-                    {suggestedUsers.map(user => (
-                      <UserCard key={user._id} user={user} onActionClick={() => handleFollow(user._id)} actionLabel="Follow" />
-                    ))}
-                  </ScrollableBox>
-                </Item>
-                <Item>
-                  <Typography variant="h6" textAlign="center">Following</Typography>
-                  <ScrollableBox>
-                    {followingUsers.map(user => (
-                      <UserCard key={user._id} user={user} onActionClick={() => handleMessageButtonClick(user._id)} actionLabel="Message" />
-                    ))}
-                  </ScrollableBox>
-                </Item>
-              </Grid>
+      <RelativeContainer>
+      {showNewPost && (
+        <ForegroundContainer>
+          <NewPost file={selectedFile} onClose={() => setShowNewPost(false)} />
+        </ForegroundContainer>
+      )}
+      <BlurredGrid container direction="column" spacing={9} shouldBlur={showNewPost}>
+          <Grid container direction="column" spacing={18}>
+            <Grid item>
+              <Header activeTab="Home" />
             </Grid>
-          </Box>
-        </Grid>
-      </Grid>
+            <Grid item>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid container justifyContent="center" alignItems="column" spacing={10}>
+                  <Grid item lg={2.1}>
+                  <Item>
+                      <Typography variant="h6" textAlign="center">Post</Typography>
+                      <Button component="label" variant="primary" startIcon={<CloudUploadIcon />}>
+                        Upload Image
+                        <VisuallyHiddenInput type="file" accept="image/*" onChange={handlePost} />
+                      </Button>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={12} md={7} lg={6}>
+                    <Item sx={{ display: 'flex', flexDirection: 'column', spacing: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <PostsContainer>
+                      {posts.map(p => (<PostCards key={p.key} post={p} />))}
+                    </PostsContainer>
+                    </Item>
+                  </Grid>
+                  <Grid item lg={2.7}>
+                    <Item>
+                      <Typography variant="h6" textAlign="center">Suggested for You</Typography>
+                      <ScrollableBox>
+                        {suggestedUsers.map(user => (
+                          <UserCard key={user._id} user={user} onActionClick={() => handleFollow(user._id)} actionLabel="Follow" />
+                        ))}
+                      </ScrollableBox>
+                    </Item>
+                    <Item>
+                      <Typography variant="h6" textAlign="center">Following</Typography>
+                      <ScrollableBox>
+                        {followingUsers.map(user => (
+                          <UserCard key={user._id} user={user} onActionClick={() => handleMessageButtonClick(user._id)} actionLabel="Message" />
+                        ))}
+                      </ScrollableBox>
+                    </Item>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
+        </BlurredGrid>
+      </RelativeContainer>
     </div>
   );
 }

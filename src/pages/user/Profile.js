@@ -47,7 +47,6 @@ function UserPosts({ posts }) {
               alt="Post Image"
               height="140"
               image={post.url}
-
             />
           )}
           <CardContent>
@@ -84,6 +83,8 @@ function UserProfile() {
           <Grid item>
             {}
             <UserPosts posts={currUser.PostedPictures} />
+            {currUser.PostedPictures}
+            {/* currUser.PostedPictures */}
           </Grid>
 
         </Grid>
