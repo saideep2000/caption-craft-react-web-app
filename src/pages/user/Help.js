@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 
-function Help() {
+function UserHelp() {
   return (
     <div style={{ marginBottom: '64px', marginTop: '64px' }}>
       <Header activeTab="Help" />
@@ -49,4 +49,4 @@ function Help() {
   );
 }
 
-export default Help;
+export default UserHelp;

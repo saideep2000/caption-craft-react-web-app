@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import MenuIcon from "@mui/icons-material/Menu"
 
-const pages = ["Craft", "Posts", "Messages", "Profile", "Settings", "Help", "Login", "SignUp"]
+const pages = ["Home", "Craft", "Search", "Messages", "Profile", "Settings"];
 
  function DrawerComp() {
   const [openDrawer, setOpenDrawer] = useState(false)

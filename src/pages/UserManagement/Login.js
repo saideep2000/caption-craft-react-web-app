@@ -14,20 +14,34 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import * as client from "./client";
+import {useDispatch} from "react-redux";
+import {setCurrUser} from "../user/userReducer";
+
 
 const defaultTheme = createTheme();
 
 
 
 function Login() {
-  
-
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [loginError, setLoginError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      navigate('/Craft');
+      console.log(credentials)
+      const message = await client.Login(credentials);
+      dispatch(setCurrUser(message));
+      if (message) {
+        navigate('/UserHome');
+      } else {
+        setLoginError('Incorrect username or password.'); // Set error message
+      }
+      // navigate('/Craft');
 
       // const response = await login({ username, password });
       
@@ -58,19 +72,33 @@ function Login() {
           <Typography component="h1" variant="h5">
             Login In
           </Typography>
+
+          {loginError && (
+            <Box sx={{ 
+              color: 'red', // white text
+              my: 2, // margin top and bottom
+              textAlign: 'center'
+            }}>
+              <Typography variant="subtitle1">{loginError}</Typography>
+            </Box>
+          )}
+
           <Box component="form" onSubmit={handleLogin} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
+              value={credentials.username}
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="User Name"
+              name="username"
+              autoComplete="username"
               autoFocus
+              onChange={(e) => setCredentials({...credentials, username: e.target.value})}
             />
             <TextField
               margin="normal"
+              value={credentials.password}
               required
               fullWidth
               name="password"
@@ -78,6 +106,7 @@ function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setCredentials({...credentials, password: e.target.value})}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

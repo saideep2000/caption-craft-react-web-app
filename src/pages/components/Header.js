@@ -1,15 +1,25 @@
 import React, {useState} from 'react'
 
 import AppBar from '@mui/material/AppBar';
-import { Button, Tab, Tabs, Toolbar, useMediaQuery, useTheme } from '@mui/material';
+import {Tab, Tabs, Toolbar, useMediaQuery, useTheme} from '@mui/material';
 import DrawerComp from './DrawerComp';
 import IconMini from './IconMini';
-import { useNavigate } from 'react-router-dom';
+import * as client from "../user/client";
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import HelpIcon from '@mui/icons-material/Help';
+import {useNavigate} from 'react-router-dom';
+import LoginButtons from "./LoginButtons";
+import {useDispatch, useSelector} from "react-redux";
+import {resetState} from "../user/userReducer";
 
-const pages = ["Craft", "Posts", "Messages", "Profile", "Settings", "Help"]
 
-function Header({ activeTab }) {
+const pages = ["Home", "Craft", "Search", "Messages", "Profile", "Settings"];
+
+function Header({activeTab}) {
+    const {currUser} = useSelector((state) => state.userReducer);
+    const isUser = (currUser._id !== undefined);
     const theme = useTheme();
+    const dispatch = useDispatch();
     const isMatch = useMediaQuery(theme.breakpoints.down("md"));
     const navigate = useNavigate();
     const findTabIndex = (tabName) => {
@@ -41,11 +51,23 @@ function Header({ activeTab }) {
         console.error('Login failed:', error);
         }
     }
+    const handleLogout = () => {
+        try {
+            client.accSignOut(currUser._id);
+            dispatch(resetState());
+            navigate("/Home");
+        } catch (error) {
+            console.error("Logout Failed:", error);
+        }
+    }
     const handleChange = (event, newValue) => {
         setValue(newValue); // Update the selected tab's value
         const page = pages[newValue]; // Get the page name based on the index
-        navigate(`/${page}`); // Navigate to the selected page's route
+        isUser ? navigate(`/User${page}`) : navigate(`/${page}`); // Navigate to the selected page's route
     };
+    const handleHelp = () =>{
+        isUser ? navigate(`/User${"Help"}`) : navigate(`/${"Help"}`);
+    }
   return (
     <React.Fragment>
         <AppBar sx = {{background : "black"}}>
@@ -65,23 +87,13 @@ function Header({ activeTab }) {
                                     ))
                                 }
                             </Tabs>
-                            <IconMini onClick = {handleIcon} sx={{ ml : "265px"}}/>
-                            <Button sx = {{
-                                marginLeft : "auto", background : "white", color : "#3c3c3c", mr : "10px", 
-                                '&:hover': {
-                                    color : "white",
-                                    backgroundColor: 'green',
-                                  },
-                            }} varaint = "conatined" onClick={handleLogin}
-                            > Login </Button>
-                            <Button sx = {{
-                                marginLeft : "5 px", background : "white", color : "#3c3c3c",
-                                '&:hover': {
-                                    color : "white",
-                                    backgroundColor: 'green',
-                                  },
-                                }} varaint = "conatined" onClick={handleSignUp}
-                                > Signup </Button>
+                            <IconMini onClick = {handleIcon} sx={{ ml : "180px"}}/>
+                            <HelpIcon onClick = {handleHelp} fontSize='large' sx={{ ml : "610px"}}/>
+                            { isUser ? <Tab icon={<PersonOutlineIcon/>} key = {currUser._id} label = {currUser.username}
+                                            textColor="white" sx={{flexGrow: 0, ml: 'auto'}} onClick={handleLogout}/> :
+                                <LoginButtons handleLogin={handleLogin} handleSignUp={handleSignUp}/>
+                            }
+
                         </>
                     )
                 }

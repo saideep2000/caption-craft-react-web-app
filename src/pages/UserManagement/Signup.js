@@ -1,6 +1,5 @@
-import React from 'react'
-
-
+import React, { useState } from 'react'
+import * as client from "./client";
 import Icon from '../components/Icon';
 
 import Button from '@mui/material/Button';
@@ -17,11 +16,21 @@ const defaultTheme = createTheme();
 
  function Signup() {
   const navigate = useNavigate();
-  const handleSignUp = () => {
+  const [signupError, setsignupError] = useState("");
+  const [info, setInfo] = useState({ username: "", password: "" , firstName : "", lastName : ""});
+
+  const handleSignUp = async (event) => {
+    event.preventDefault();
     try {
-    navigate('/Login');
+      const message = await client.Signup(info);
+      if (message) {
+        navigate('/Login');
+      } else {
+        setsignupError(message); // Set error message
+      }
+    
     } catch (error) {
-    console.error('Login failed:', error);
+      setsignupError('Signup failed', error);
     }
   }
   return (
@@ -40,28 +49,33 @@ const defaultTheme = createTheme();
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
+
+          {signupError && (
+            <Box sx={{ 
+              color: 'red', // white text
+              my: 2, // margin top and bottom
+              textAlign: 'center'
+            }}>
+              <Typography variant="subtitle1">{signupError}</Typography>
+            </Box>
+          )}
+
           <Box component="form" onSubmit={handleSignUp} noValidate sx={{ mt: 1 }}>
           <TextField
               margin="normal"
+              value={info.username}
               required
               fullWidth
-              id="name"
-              label="Full Name"
-              name="name"
-              autoComplete="name"
+              id="username"
+              label="username"
+              name="username"
+              autoComplete="username"
               autoFocus
+              onChange={(e) => setInfo({...info, username: e.target.value})}
             />
             <TextField
               margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-            />
-            <TextField
-              margin="normal"
+              value={info.password}
               required
               fullWidth
               name="password"
@@ -69,6 +83,31 @@ const defaultTheme = createTheme();
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setInfo({...info, password: e.target.value})}
+            />
+          <TextField
+              margin="normal"
+              value={info.firstName}
+              required
+              fullWidth
+              id="firstname"
+              label="First Name"
+              name="firstname"
+              autoComplete="firstname"
+              autoFocus
+              onChange={(e) => setInfo({...info, firstName: e.target.value})}
+            />
+            <TextField
+              margin="normal"
+              value={info.lastName}
+              required
+              fullWidth
+              id="lastname"
+              label="Last Name"
+              name="lastname"
+              autoComplete="lastname"
+              autoFocus
+              onChange={(e) => setInfo({...info, lastName: e.target.value})}
             />
             <Button
               type="submit"
